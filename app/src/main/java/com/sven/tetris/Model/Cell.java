@@ -16,6 +16,13 @@ public class Cell {
     private int col;
     private int state;
 
+    public void setRow(int row) {
+        this.row = row;
+    }
+
+    public void setCol(int col) {
+        this.col = col;
+    }
 
     public Cell(int row, int col) {
         this.row = row;
@@ -66,4 +73,15 @@ public class Cell {
         col = centerCell.getRow() + centerCell.getCol() - row;
         row = tempRow;
     }
+
+    public void antRotation(Cell centerCell) {
+        if (centerCell == null) {
+            return;
+        }
+        int tempRow;
+        tempRow = centerCell.getRow() + centerCell.getCol() - col;
+        col = centerCell.getCol() - centerCell.getRow() + row;
+        row = tempRow;
+    }
+
 }

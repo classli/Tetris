@@ -59,4 +59,16 @@ public class Tetromino {
             cells[i].rotation(center);
         }
     }
+
+    public void antRotation(Cell center) {
+        if (cells == null || center == null) {
+            return;
+        }
+        if (TYPE_O.equals(type)) {
+            return;
+        }
+        for (int i=0; i<cells.length;i++) {
+            cells[i].antRotation(center);
+        }
+    }
 }

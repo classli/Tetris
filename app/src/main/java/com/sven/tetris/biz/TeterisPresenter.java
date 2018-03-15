@@ -1,5 +1,7 @@
 package com.sven.tetris.biz;
 
+import android.util.Log;
+
 import com.sven.tetris.ViewInterface;
 import com.sven.tetris.model.Cell;
 import com.sven.tetris.model.TetrisFactory;
@@ -16,7 +18,7 @@ import java.util.TimerTask;
  */
 
 public class TeterisPresenter {
-
+    private static final String TAG = "TeterisPresenter";
     public static final int GAME_START = 1;
     public static final int GAME_STOP = 0;
 
@@ -54,7 +56,7 @@ public class TeterisPresenter {
                 if (nowTetromino == null) {
                     initTetris();
                 }
-                if (!handleCollision()) {
+                if (!handleDownCollision()) {
                     nowTetromino.moveDown();
                 }
             }
@@ -85,7 +87,7 @@ public class TeterisPresenter {
         }
     }
 
-    private boolean handleCollision() {
+    private boolean handleDownCollision() {
         if (nowTetromino != null) {
             boolean isCollision = false;
             for (Cell cell : nowTetromino.cells) {
@@ -93,7 +95,7 @@ public class TeterisPresenter {
                 int col = cell.getCol();
                 String key = (row + 1) + "-" + col;
                 if ((stoppedCellMap.containsKey(key) && Cell.CELL_CENTER != stoppedCellMap.get(key).getState())
-                        || cell.getRow() >= Constant.row-1) {
+                        || cell.getRow() >= Constant.row - 1) {
                     isCollision = true;
 
                     boolean isTop = false;
@@ -116,7 +118,7 @@ public class TeterisPresenter {
                 }
                 initTetris();
             }
-            if (gameState == GAME_STOP){
+            if (gameState == GAME_STOP) {
                 if (timer != null) {
                     timer.cancel();
                 }
@@ -126,36 +128,36 @@ public class TeterisPresenter {
         return false;
     }
 
-    private boolean handleLeftCollision() {
+    private boolean isLeftCollision() {
         if (nowTetromino != null) {
             for (Cell cell : nowTetromino.cells) {
                 int row = cell.getRow();
                 int col = cell.getCol();
-                String key = (row + 1) + "-" + (col-1);
+                String key = row + "-" + (col - 1);
                 if ((stoppedCellMap.containsKey(key) && Cell.CELL_CENTER != stoppedCellMap.get(key).getState())
-                        || col <=0) {
-                    return false;
+                        || col <= 0) {
+                    return true;
                 }
             }
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 
-    private boolean handleRightCollision() {
+    private boolean isRightCollision() {
         if (nowTetromino != null) {
             for (Cell cell : nowTetromino.cells) {
                 int row = cell.getRow();
                 int col = cell.getCol();
-                String key = (row + 1) + "-" + (col+1);
+                String key = row + "-" + (col + 1);
                 if ((stoppedCellMap.containsKey(key) && Cell.CELL_CENTER != stoppedCellMap.get(key).getState())
-                        || col >= Constant.col -1) {
-                    return false;
+                        || col >= Constant.col - 1) {
+                    return true;
                 }
             }
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 
     private void eliminateCell() {
@@ -166,28 +168,112 @@ public class TeterisPresenter {
         if (nowTetromino != null) {
             Cell[] cells = nowTetromino.cells;
             if (nowTetromino.type.equals(Tetromino.TYPE_I)) {
-
-            } else {
-                nowTetromino.rotation(cells[1]);
+                if (cells[0].getCol() == cells[3].getCol()) {
+                    if (!isAntRotationCollision(nowTetromino.cells[1], nowTetromino.cells)) {
+                        nowTetromino.antRotation(nowTetromino.cells[1]);
+                    } else {
+                        if (cells[0].getCol() == 0) {
+                            nowTetromino.moveRight();
+                            if (!isAntRotationCollision(nowTetromino.cells[1], nowTetromino.cells)) {
+                                nowTetromino.antRotation(nowTetromino.cells[1]);
+                            } else {
+                                nowTetromino.moveLeft();
+                            }
+                        } else if (cells[0].getCol() == Constant.col-1) {
+                            nowTetromino.moveLeft();
+                            nowTetromino.moveLeft();
+                            if (!isAntRotationCollision(nowTetromino.cells[1], nowTetromino.cells)) {
+                                nowTetromino.antRotation(nowTetromino.cells[1]);
+                            } else {
+                                nowTetromino.moveRight();
+                                nowTetromino.moveRight();
+                            }
+                        } else if (cells[0].getCol() == Constant.col-2) {
+                            nowTetromino.moveLeft();
+                            if (!isAntRotationCollision(nowTetromino.cells[1], nowTetromino.cells)) {
+                                nowTetromino.antRotation(nowTetromino.cells[1]);
+                            } else {
+                                nowTetromino.moveRight();
+                            }
+                        }
+                    }
+                } else {
+                    if (!isRotationCollision(nowTetromino.cells[1], nowTetromino.cells)) {
+                        nowTetromino.rotation(nowTetromino.cells[1]);
+                    }
+                }
+            } else if (nowTetromino.type.equals(Tetromino.TYPE_Z)) {
+                if (nowTetromino.cells[1].getRow()<nowTetromino.cells[2].getRow()
+                        && !isRotationCollision(nowTetromino.cells[1], nowTetromino.cells)) {
+                    nowTetromino.rotation(nowTetromino.cells[1]);
+                } else if (!isAntRotationCollision(nowTetromino.cells[1], nowTetromino.cells)){
+                    nowTetromino.antRotation(nowTetromino.cells[1]);
+                }
+            } else if (nowTetromino.type.equals(Tetromino.TYPE_S)) {
+                if (nowTetromino.cells[1].getRow() < nowTetromino.cells[3].getRow()
+                        && !isAntRotationCollision(nowTetromino.cells[1], nowTetromino.cells)) {
+                    nowTetromino.antRotation(nowTetromino.cells[1]);
+                } else if(!isRotationCollision(nowTetromino.cells[1], nowTetromino.cells)) {
+                    nowTetromino.rotation(nowTetromino.cells[1]);
+                }
+            }else {
+                if (!isRotationCollision(cells[1], cells)) {
+                    nowTetromino.rotation(cells[1]);
+                }
             }
         }
     }
 
+    private boolean isRotationCollision(Cell center, Cell[] cells) {
+        if (cells == null || center == null) {
+            return false;
+        }
+        int row;
+        int col;
+        for (Cell cell : cells) {
+            row = center.getRow() - center.getCol() + cell.getCol();
+            col = center.getRow() + center.getCol() - cell.getRow();
+            String key = row + "-" + col;
+            if ((stoppedCellMap.containsKey(key) && Cell.CELL_CENTER != stoppedCellMap.get(key).getState())
+                    || row > Constant.row - 1 || col < 0 || col > Constant.col - 1) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isAntRotationCollision(Cell center, Cell[] cells) {
+        if (cells == null || center == null) {
+            return false;
+        }
+        int row;
+        int col;
+        for (Cell cell : cells) {
+            row = center.getRow() + center.getCol() - cell.getCol();
+            col = center.getCol() - center.getRow() + cell.getRow();
+            String key = row + "-" + col;
+            if ((stoppedCellMap.containsKey(key) && Cell.CELL_CENTER != stoppedCellMap.get(key).getState())
+                    || row > Constant.row - 1 || col < 0 || col > Constant.col - 1) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void moveLeft() {
-        if (nowTetromino != null && handleLeftCollision()) {
+        if (nowTetromino != null && !isLeftCollision()) {
             nowTetromino.moveLeft();
         }
     }
 
     public void moveRight() {
-        if (nowTetromino != null && handleRightCollision()) {
+        if (nowTetromino != null && !isRightCollision()) {
             nowTetromino.moveRight();
         }
     }
 
     public void moveDown() {
-        if (nowTetromino != null) {
-            handleCollision();
+        if (nowTetromino != null && !handleDownCollision()) {
             nowTetromino.moveDown();
         }
     }
