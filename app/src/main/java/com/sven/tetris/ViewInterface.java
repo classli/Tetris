@@ -10,6 +10,6 @@ import java.util.Map;
  */
 
 public interface ViewInterface {
-    void refreshStoppedCells(Map<String, Cell> cellMap);
+    void refreshStoppedCells(Cell[][] cells);
     void refreshTetromino(Tetromino tetromino);
 }

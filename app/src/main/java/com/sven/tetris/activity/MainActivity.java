@@ -16,7 +16,7 @@ import com.sven.tetris.view.MainSurfaceView;
 
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements ViewInterface{
+public class MainActivity extends AppCompatActivity implements ViewInterface {
 
     private MainSurfaceView surfaceView;
     private TeterisPresenter presenter;
@@ -95,11 +95,11 @@ public class MainActivity extends AppCompatActivity implements ViewInterface{
     }
 
     @Override
-    public void refreshStoppedCells(Map<String, Cell> cellMap) {
-        if (cellMap == null || surfaceView == null) {
+    public void refreshStoppedCells(Cell[][] cells) {
+        if (cells == null || surfaceView == null) {
             return;
         }
-        surfaceView.setStoppedCells(cellMap);
+        surfaceView.setStoppedCells(cells);
     }
 
     @Override
