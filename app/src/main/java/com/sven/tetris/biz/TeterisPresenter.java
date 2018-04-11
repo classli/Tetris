@@ -22,7 +22,6 @@ public class TeterisPresenter {
     private Tetromino nowTetromino;
     private Tetromino nextTetromino;
 
-    //    private Map<String, Cell> stoppedCellMap = new HashMap<String, Cell>();
     private Cell[][] stopCells = new Cell[Constant.row][Constant.col];
     private Timer timer;
     private Timer clearTimer;
@@ -77,7 +76,33 @@ public class TeterisPresenter {
         clearTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-
+                for (int i = 0; i < stopCells.length; i++) {
+                    boolean canClear = true;
+                    for (int j = 0; j < stopCells[0].length; j++) {
+                        if (stopCells[i][j] == null || stopCells[i][j].getState() != Cell.CELL_STOP) {
+                           canClear = false;
+                        }
+                        if (stopCells[i][j] != null && stopCells[i][j].getState() == Cell.CELL_WILL_DEAD) {
+                            stopCells[i][j].addLifeTime();
+                        }
+                    }
+                    if (canClear) {
+                        for (int j = 0; j < stopCells[0].length; j++) {
+                            stopCells[i][j].setState(Cell.CELL_WILL_DEAD);
+                        }
+                    }
+                    if (stopCells[i][0] != null && stopCells[i][0].getState() == Cell.CELL_DID_DEAD) {
+                        for (int r = i-1; r > 0; r--) {
+                            for (int c = 0; c < stopCells[0].length; c++) {
+                                if (stopCells[r][c] != null) {
+                                    stopCells[r][c].setRow(stopCells[r][c].getRow()+1);
+                                }
+                                stopCells[r+1][c] = stopCells[r][c];
+                                stopCells[r][c] = null;
+                            }
+                        }
+                    }
+                }
             }
         }, CLEAR_TIME, CLEAR_TIME);
     }
@@ -120,7 +145,7 @@ public class TeterisPresenter {
                 if (cell.getState() == Cell.CELL_CENTER) {
                     continue;
                 }
-                if ((row + 1 > 0 && col > 0 && row + 1 < Constant.row && col < Constant.col && stopCells[row + 1][col] != null)
+                if ((row + 1 >= 0 && col >= 0 && row + 1 < Constant.row && col < Constant.col && stopCells[row + 1][col] != null)
                         || cell.getRow() >= Constant.row - 1) {
                     isCollision = true;
 
@@ -143,7 +168,10 @@ public class TeterisPresenter {
                         if (cell.getState() == Cell.CELL_CENTER) {
                             continue;
                         }
-                        stopCells[row][col] = cell;
+                        cell.setState(Cell.CELL_STOP);
+                        if (row >= 0 && col >= 0 && row < Constant.row && col < Constant.col) {
+                            stopCells[row][col] = cell;
+                        }
                     }
                 }
                 initTetris();
@@ -166,7 +194,8 @@ public class TeterisPresenter {
                 if (cell.getState() == Cell.CELL_CENTER) {
                     continue;
                 }
-                if ((row > 0 && col - 1 > 0 && row < Constant.row && col < Constant.col && stopCells[row][col - 1] != null) || col <= 0) {
+                if ((row >= 0 && col - 1 >= 0 && row < Constant.row && col < Constant.col && stopCells[row][col - 1] != null)
+                        || col <= 0) {
                     return true;
                 }
             }
@@ -183,7 +212,8 @@ public class TeterisPresenter {
                 if (cell.getState() == Cell.CELL_CENTER) {
                     continue;
                 }
-                if ((row > 0 && col + 1 > 0 && row < Constant.row && col + 1 < Constant.col && stopCells[row][col + 1] != null) || col >= Constant.col - 1) {
+                if ((row >= 0 && col + 1 >= 0 && row < Constant.row && col + 1 < Constant.col && stopCells[row][col + 1] != null)
+                        || col >= Constant.col - 1) {
                     return true;
                 }
             }
@@ -268,7 +298,7 @@ public class TeterisPresenter {
             }
             row = center.getRow() - center.getCol() + cell.getCol();
             col = center.getRow() + center.getCol() - cell.getRow();
-            if ((row > 0 && col > 0 && row < Constant.row && col < Constant.col && stopCells[row][col] != null)
+            if ((row >= 0 && col >= 0 && row < Constant.row && col < Constant.col && stopCells[row][col] != null)
                     || row > Constant.row - 1 || col < 0 || col > Constant.col - 1) {
                 return true;
             }
@@ -288,7 +318,7 @@ public class TeterisPresenter {
             }
             row = center.getRow() + center.getCol() - cell.getCol();
             col = center.getCol() - center.getRow() + cell.getRow();
-            if ((row > 0 && col > 0 && row < Constant.row && col < Constant.col && stopCells[row][col] != null)
+            if ((row >= 0 && col >= 0 && row < Constant.row && col < Constant.col && stopCells[row][col] != null)
                     || row > Constant.row - 1 || col < 0 || col > Constant.col - 1) {
                 return true;
             }

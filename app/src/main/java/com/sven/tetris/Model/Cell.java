@@ -12,9 +12,18 @@ public class Cell {
     public final static int CELL_DID_DEAD = 2;
     public final static int CELL_WILL_DEAD = 3;
     public final static int CELL_CENTER = 4;
+    public final static int LEFT_ADD_TIME = 4;
     private int row;
     private int col;
     private int state;
+    private int lifeTime = 0;
+
+    public void addLifeTime() {
+        lifeTime ++;
+        if (lifeTime == LEFT_ADD_TIME) {
+            state = CELL_DID_DEAD;
+        }
+    }
 
     public void setRow(int row) {
         this.row = row;
