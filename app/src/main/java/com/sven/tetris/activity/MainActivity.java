@@ -14,13 +14,11 @@ import com.sven.tetris.model.Tetromino;
 import com.sven.tetris.util.Utils;
 import com.sven.tetris.view.MainSurfaceView;
 
-import java.util.Map;
-
 public class MainActivity extends AppCompatActivity implements ViewInterface {
 
     private MainSurfaceView surfaceView;
     private TeterisPresenter presenter;
-    private TextView textView;
+    private TextView restart;
     private TextView change;
     private TextView stop;
     private ImageView left;
@@ -31,7 +29,6 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Utils.setStatusBarColor(this, R.color.button_bg);
         setContentView(R.layout.activity_main);
         initView();
         initData();
@@ -44,10 +41,8 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         down = findViewById(R.id.btn_down);
         shotDown = findViewById(R.id.btn_ddown);
         stop = findViewById(R.id.pause);
-        textView = findViewById(R.id.restart);
-
+        restart = findViewById(R.id.restart);
         change = findViewById(R.id.change);
-
     }
 
     private void initData() {
@@ -84,11 +79,19 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                 }
             }
         });
-        textView.setOnClickListener(new View.OnClickListener() {
+        restart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (presenter != null) {
                     presenter.startGame();
+                }
+            }
+        });
+        stop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (presenter != null) {
+                    presenter.stopGame();
                 }
             }
         });

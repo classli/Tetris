@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#D2D2D2</color>
+    <color name="colorPrimaryDark">#D2D2D2</color>
     <color name="colorAccent">#FF4081</color>
     <color name="white">#FFFFFF</color>
-    <color name="button_bg">#E8E9F1</color>
+    <color name="button_bg">#f2f2f5</color>
     <color name="button_pressed_bg">#DADCEC</color>
     <color name="custom_blue">#1267c8</color>
     <color name="unit_default">#AAAAAC</color>
@@ -13,4 +13,6 @@
     <color name="unit_down_line">#2a2a2a</color>
     <color name="unit_fall_line">#414345</color>
     <color name="unit_fall">#535355</color>
+    <color name="control_text_blue">#1A7EEB</color>
+    <color name="msg_box_line_color">#D2D2D2</color>
 </resources>

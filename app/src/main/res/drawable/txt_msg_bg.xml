@@ -3,7 +3,7 @@
     <!-- 边框 -->
     <stroke
         android:width="0.5dp"
-        android:color="@android:color/black" />
+        android:color="@color/msg_box_line_color" />
     <!-- 圆角 -->
     <corners android:radius="5dp" />
 </shape>

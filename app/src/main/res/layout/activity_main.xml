@@ -19,7 +19,7 @@
         android:orientation="vertical"
         android:layout_alignParentEnd="true"
         android:layout_marginRight="30dp"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="120dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
@@ -28,14 +28,15 @@
             android:layout_height="wrap_content"
             android:text="@string/Score"
             android:textColor="@android:color/black"
+            android:textSize="@dimen/msg_text_size"
             />
 
         <TextView
             android:id="@+id/score"
             android:layout_marginTop="10dp"
             android:background="@drawable/txt_msg_bg"
-            android:layout_width="74dp"
-            android:layout_height="30dp"
+            android:layout_width="@dimen/msg_box_width"
+            android:layout_height="@dimen/msg_box_height"
             android:gravity="center_vertical|right"
             />
 
@@ -44,6 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/clear_line"
+            android:textSize="@dimen/msg_text_size"
             android:textColor="@android:color/black"
             />
 
@@ -51,8 +53,8 @@
             android:id="@+id/clear_line"
             android:layout_marginTop="10dp"
             android:background="@drawable/txt_msg_bg"
-            android:layout_width="74dp"
-            android:layout_height="30dp"
+            android:layout_width="@dimen/msg_box_width"
+            android:layout_height="@dimen/msg_box_height"
             android:gravity="center_vertical|right"
             />
 
@@ -61,6 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/level"
+            android:textSize="@dimen/msg_text_size"
             android:textColor="@android:color/black"
             />
 
@@ -68,8 +71,8 @@
             android:id="@+id/level"
             android:layout_marginTop="10dp"
             android:background="@drawable/txt_msg_bg"
-            android:layout_width="74dp"
-            android:layout_height="30dp"
+            android:layout_width="@dimen/msg_box_width"
+            android:layout_height="@dimen/msg_box_height"
             android:gravity="center_vertical|right"
             />
 
@@ -77,6 +80,7 @@
             android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="@dimen/msg_text_size"
             android:textColor="@android:color/black"
             android:text="@string/next_view"/>
     </LinearLayout>
@@ -146,6 +150,12 @@
             android:id="@+id/pause"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/control_text_bg"
+            android:textColor="@drawable/control_text_color"
+            android:paddingRight="@dimen/control_text_padding_left"
+            android:paddingLeft="@dimen/control_text_padding_left"
+            android:paddingTop="@dimen/control_text_padding_top"
+            android:paddingBottom="@dimen/control_text_padding_top"
             android:text="@string/pause"/>
 
         <TextView
@@ -153,6 +163,12 @@
             android:layout_alignParentEnd="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingRight="@dimen/control_text_padding_left"
+            android:paddingLeft="@dimen/control_text_padding_left"
+            android:paddingTop="@dimen/control_text_padding_top"
+            android:paddingBottom="@dimen/control_text_padding_top"
+            android:background="@drawable/control_text_bg"
+            android:textColor="@drawable/control_text_color"
             android:text="@string/restart"
             />
 
@@ -160,6 +176,7 @@
             android:id="@+id/change"
             android:gravity="center"
             android:text="@string/change"
+            android:textColor="@drawable/control_button_text_color"
             android:layout_marginTop="20dp"
             android:layout_below="@id/restart"
             android:layout_width="89dp"

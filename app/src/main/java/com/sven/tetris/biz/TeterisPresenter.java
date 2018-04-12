@@ -28,7 +28,6 @@ public class TeterisPresenter {
     private int startTime = 500;
     private int intervalTime = 300;
     private int gameState;
-    private int clearInterval = 0;
 
     public TeterisPresenter(ViewInterface view) {
         this.mvpView = view;
@@ -220,10 +219,6 @@ public class TeterisPresenter {
             return false;
         }
         return true;
-    }
-
-    private void eliminateCell() {
-
     }
 
     public void rotationTeteris() {
