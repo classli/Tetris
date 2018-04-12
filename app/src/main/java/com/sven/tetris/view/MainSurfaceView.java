@@ -81,7 +81,7 @@ public class MainSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     public void surfaceCreated(SurfaceHolder holder) {
         viewWidth = this.getWidth();
         viewHeight = this.getHeight();
-        unitWidth = viewWidth / (Constant.col + 2);
+        unitWidth = viewWidth / Constant.col;
         flag = true;
         thread = new Thread(this);
         thread.start();
@@ -95,21 +95,20 @@ public class MainSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                     interval = 0;
                 }
                 interval ++;
-                canvas.drawColor(backGroundColor);
                 paint.setStyle(Paint.Style.FILL);
                 paint.setColor(unitDefaultColor);
-                canvas.drawRect(unitWidth, unitWidth, viewWidth-unitWidth, viewHeight -unitWidth, paint);
+                canvas.drawRect(0, 0, viewWidth, viewHeight, paint);
                 paint.setColor(Color.BLACK);
                 paint.setStyle(Paint.Style.STROKE);
                 paint.setStrokeWidth(backGroundStrokeWidth);
-                canvas.drawRect(unitWidth, unitWidth, viewWidth-unitWidth, viewHeight -unitWidth, paint);
+                canvas.drawRect(0, 0, viewWidth, viewHeight, paint);
                 paint.setStyle(Paint.Style.FILL);
                 paint.setColor(unitLineColor);
                 for (int i=0; i<Constant.row-1; i++) {
-                    canvas.drawLine(unitWidth, unitWidth*i+2*unitWidth, viewWidth-unitWidth, unitWidth*i+2*unitWidth, paint);
+                    canvas.drawLine(0, unitWidth*i+unitWidth, viewWidth, unitWidth*i+unitWidth, paint);
                 }
                 for (int i=0; i<Constant.col-1; i++) {
-                    canvas.drawLine(unitWidth*i+2*unitWidth, unitWidth, unitWidth*i+2*unitWidth, viewHeight-unitWidth, paint);
+                    canvas.drawLine(unitWidth*i+unitWidth, 0, unitWidth*i+unitWidth, viewHeight, paint);
                 }
 
                 if (stoppedCells != null) {
@@ -130,23 +129,23 @@ public class MainSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                             if (Cell.CELL_WILL_DEAD == cell.getState() && interval > 5) {
                                 paint.setStyle(Paint.Style.FILL);
                                 paint.setColor(unitDefaultColor);
-                                canvas.drawRect(col*unitWidth+unitWidth, row*unitWidth+unitWidth, col*unitWidth+2*unitWidth,
-                                        row*unitWidth+2*unitWidth, paint);
+                                canvas.drawRect(col*unitWidth, row*unitWidth, col*unitWidth+unitWidth,
+                                        row*unitWidth+unitWidth, paint);
                                 paint.setColor(unitLineColor);
                                 paint.setStyle(Paint.Style.STROKE);
                                 paint.setStrokeWidth(backGroundStrokeWidth);
-                                canvas.drawRect(col*unitWidth+unitWidth, row*unitWidth+unitWidth, col*unitWidth+2*unitWidth,
-                                        row*unitWidth+2*unitWidth, paint);
+                                canvas.drawRect(col*unitWidth, row*unitWidth, col*unitWidth+unitWidth,
+                                        row*unitWidth+unitWidth, paint);
                             } else {
                                 paint.setStyle(Paint.Style.FILL);
                                 paint.setColor(unitDownColor);
-                                canvas.drawRect(col*unitWidth+unitWidth, row*unitWidth+unitWidth, col*unitWidth+2*unitWidth,
-                                        row*unitWidth+2*unitWidth, paint);
+                                canvas.drawRect(col*unitWidth, row*unitWidth, col*unitWidth+unitWidth,
+                                        row*unitWidth+unitWidth, paint);
                                 paint.setColor(unitDownLine);
                                 paint.setStyle(Paint.Style.STROKE);
                                 paint.setStrokeWidth(backGroundStrokeWidth);
-                                canvas.drawRect(col*unitWidth+unitWidth, row*unitWidth+unitWidth, col*unitWidth+2*unitWidth,
-                                        row*unitWidth+2*unitWidth, paint);
+                                canvas.drawRect(col*unitWidth, row*unitWidth, col*unitWidth+unitWidth,
+                                        row*unitWidth+unitWidth, paint);
                             }
                         }
                     }
@@ -164,13 +163,13 @@ public class MainSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                         int col = cell.getCol();
                         paint.setStyle(Paint.Style.FILL);
                         paint.setColor(unitFallColor);
-                        canvas.drawRect(col*unitWidth+unitWidth, row*unitWidth+unitWidth, col*unitWidth+2*unitWidth,
-                                row*unitWidth+2*unitWidth, paint);
+                        canvas.drawRect(col*unitWidth, row*unitWidth, col*unitWidth+unitWidth,
+                                row*unitWidth+unitWidth, paint);
                         paint.setColor(unitFallLine);
                         paint.setStyle(Paint.Style.STROKE);
                         paint.setStrokeWidth(backGroundStrokeWidth);
-                        canvas.drawRect(col*unitWidth+unitWidth, row*unitWidth+unitWidth, col*unitWidth+2*unitWidth,
-                                row*unitWidth+2*unitWidth, paint);
+                        canvas.drawRect(col*unitWidth, row*unitWidth, col*unitWidth+unitWidth,
+                                row*unitWidth+unitWidth, paint);
                     }
                 }
             }

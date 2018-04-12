@@ -1,8 +1,19 @@
 package com.sven.tetris.activity;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.CycleInterpolator;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -11,11 +22,12 @@ import com.sven.tetris.ViewInterface;
 import com.sven.tetris.biz.TeterisPresenter;
 import com.sven.tetris.model.Cell;
 import com.sven.tetris.model.Tetromino;
+import com.sven.tetris.util.Constant;
 import com.sven.tetris.util.Utils;
 import com.sven.tetris.view.MainSurfaceView;
 
 public class MainActivity extends AppCompatActivity implements ViewInterface {
-
+    private static final String TAG = "MainActivity";
     private MainSurfaceView surfaceView;
     private TeterisPresenter presenter;
     private TextView restart;
@@ -55,28 +67,55 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                 }
             }
         });
-        left.setOnClickListener(new View.OnClickListener() {
+        left.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                if (presenter != null) {
-                    presenter.moveLeft();
+            public boolean onTouch(View view, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        if (presenter != null) {
+                            presenter.moveLeft();
+                        }
+                        handler.sendEmptyMessageDelayed(Constant.MSG_LEFT, Constant.LONG_PRESS_TIME);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        handler.removeCallbacksAndMessages(null);
+                        break;
                 }
+                return true;
             }
         });
-        right.setOnClickListener(new View.OnClickListener() {
+        right.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                if (presenter != null) {
-                    presenter.moveRight();
+            public boolean onTouch(View view, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        if (presenter != null) {
+                            presenter.moveRight();
+                        }
+                        handler.sendEmptyMessageDelayed(Constant.MSG_RIGHT, Constant.LONG_PRESS_TIME);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        handler.removeCallbacksAndMessages(null);
+                        break;
                 }
+                return true;
             }
         });
-        down.setOnClickListener(new View.OnClickListener() {
+        down.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                if (presenter != null) {
-                    presenter.moveDown();
+            public boolean onTouch(View view, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        if (presenter != null) {
+                            presenter.moveDown();
+                        }
+                        handler.sendEmptyMessageDelayed(Constant.MSG_DOWN, Constant.LONG_PRESS_TIME);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        handler.removeCallbacksAndMessages(null);
+                        break;
                 }
+                return true;
             }
         });
         restart.setOnClickListener(new View.OnClickListener() {
@@ -92,6 +131,21 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
             public void onClick(View v) {
                 if (presenter != null) {
                     presenter.stopGame();
+                }
+            }
+        });
+        shotDown.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (presenter != null) {
+                    ObjectAnimator animator = ObjectAnimator.ofFloat(surfaceView, "TranslationY", 0
+                            , getResources().getDimension(R.dimen.translationY));
+                    animator.setDuration(30);
+                    animator.setRepeatCount(1);
+                    animator.setInterpolator(new AccelerateDecelerateInterpolator());
+                    animator.setRepeatMode(ValueAnimator.REVERSE);
+                    animator.start();
+                    presenter.shotDown();
                 }
             }
         });
@@ -111,5 +165,38 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
             return;
         }
         surfaceView.setNowTetromino(tetromino);
+    }
+
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case Constant.MSG_DOWN:
+                    handler.sendEmptyMessageDelayed(Constant.MSG_DOWN, Constant.LONG_PRESS_DOWN);
+                    if (presenter != null) {
+                        presenter.moveDown();
+                    }
+                    break;
+                case Constant.MSG_LEFT:
+                    handler.sendEmptyMessageDelayed(Constant.MSG_LEFT, Constant.LONG_PRESS_LEFT);
+                    if (presenter != null) {
+                        presenter.moveLeft();
+                    }
+                    break;
+                case Constant.MSG_RIGHT:
+                    handler.sendEmptyMessageDelayed(Constant.MSG_RIGHT, Constant.LONG_PRESS_LEFT);
+                    if (presenter != null) {
+                        presenter.moveRight();
+                    }
+                    break;
+            }
+            super.handleMessage(msg);
+        }
+    };
+
+    @Override
+    protected void onDestroy() {
+        handler.removeCallbacksAndMessages(null);
+        super.onDestroy();
     }
 }

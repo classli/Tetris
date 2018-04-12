@@ -9,4 +9,5 @@
     <dimen name="msg_box_height">28dp</dimen>
     <dimen name="control_text_padding_left">10dp</dimen>
     <dimen name="control_text_padding_top">3dp</dimen>
+    <dimen name="translationY">4dp</dimen>
 </resources>

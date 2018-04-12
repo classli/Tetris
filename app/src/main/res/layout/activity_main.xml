@@ -7,12 +7,21 @@
     android:background="@android:color/white"
     tools:context="com.sven.tetris.activity.MainActivity">
 
-    <com.sven.tetris.view.MainSurfaceView
-        android:id="@+id/main_view"
+    <RelativeLayout
+        android:id="@+id/main_view_rl"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="65dp"
+        android:gravity="center"
+        android:background="@color/button_bg"
         android:layout_width="182dp"
-        android:layout_height="308dp" />
+        android:layout_height="308dp">
+
+        <com.sven.tetris.view.MainSurfaceView
+            android:id="@+id/main_view"
+            android:layout_width="154dp"
+            android:layout_height="280dp" />
+
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/detail_ll"
@@ -87,7 +96,7 @@
     
     <RelativeLayout
         android:id="@+id/direction_ll"
-        android:layout_below="@id/main_view"
+        android:layout_below="@id/main_view_rl"
         android:layout_marginTop="50dp"
         android:layout_marginLeft="20dp"
         android:layout_marginBottom="10dp"
@@ -142,7 +151,7 @@
         android:layout_marginRight="20dp"
         android:layout_marginTop="50dp"
         android:layout_alignParentEnd="true"
-        android:layout_below="@id/main_view"
+        android:layout_below="@id/main_view_rl"
         android:layout_width="100dp"
         android:layout_height="wrap_content">
 
