@@ -12,4 +12,6 @@ import java.util.Map;
 public interface ViewInterface {
     void refreshStoppedCells(Cell[][] cells);
     void refreshTetromino(Tetromino tetromino);
+    void updateScore(boolean isLineScore);
+    int getLevel();
 }

@@ -12,11 +12,22 @@ public class Constant {
     public final static int LONG_PRESS_DOWN = 40;
     public final static int LONG_PRESS_LEFT = 100;
     public final static int MSG_DOWN = 1;
-    public final static int MSG_DDOWN = 2;
     public final static int MSG_LEFT = 3;
     public final static int MSG_RIGHT = 4;
 
-    public static final int GAME_START = 1;
-    public static final int GAME_STOP = 0;
-    public static final int CLEAR_TIME = 200;
+    public static final int CLEAR_TIME = 180;
+
+    public static final int SCORE_LINE = 100;
+    public static final int SCORE_CELL = 8;
+
+    public static final int STARTTIME = 500;
+    public static final int INTERVALTIME = 800;
+
+    public static final String SP_NAME = "TETERIS_SP";
+    public static final String SP_KEY_MAX_SCORE = "max_score";
+    public static final String SP_KEY_SUSPEND = "suspend_state";
+    public static final String SP_KEY_SCORE = "score";
+    public static final String SP_KEY_CLEAN_LINE = "cleanLine";
+    public static final String SP_KEY_LEVEL = "level";
+    public static final String SP_KEY_CELL = "cell";
 }

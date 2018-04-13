@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Tetris</string>
     <string name="Score">当前得分</string>
+    <string name="max_score">最高分</string>
     <string name="clear_line">消除行数</string>
     <string name="next_view">下一个</string>
     <string name="level">级别</string>

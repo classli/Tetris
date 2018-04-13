@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<selector xmlns:android="http://schemas.android.com/apk/res/android" android:enterFadeDuration="200"
+    android:exitFadeDuration="200">
     <!-- 手指触摸时的button -->
     <item android:state_pressed="true">
         <shape android:shape="oval">

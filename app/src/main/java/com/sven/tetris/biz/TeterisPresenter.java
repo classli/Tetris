@@ -1,10 +1,15 @@
 package com.sven.tetris.biz;
 
+import android.text.TextUtils;
+
 import com.sven.tetris.ViewInterface;
 import com.sven.tetris.model.Cell;
 import com.sven.tetris.model.TetrisFactory;
 import com.sven.tetris.model.Tetromino;
 import com.sven.tetris.util.Constant;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -15,6 +20,9 @@ import java.util.TimerTask;
 
 public class TeterisPresenter {
     private static final String TAG = "TeterisPresenter";
+    public static final int GAME_START = 1;
+    public static final int GAME_STOP = 0;
+    public static final int GAME_SUSPEND = 2;
 
     private ViewInterface mvpView;
     private Tetromino nowTetromino;
@@ -23,13 +31,42 @@ public class TeterisPresenter {
     private Cell[][] stopCells = new Cell[Constant.row][Constant.col];
     private Timer timer;
     private Timer clearTimer;
-    private int startTime = 500;
-    private int intervalTime = 800;
     private int gameState;
+
+    public int getGameState() {
+        return gameState;
+    }
+
+    public void setGameState(int gameState) {
+        this.gameState = gameState;
+    }
 
     public TeterisPresenter(ViewInterface view) {
         this.mvpView = view;
         mvpView.refreshStoppedCells(stopCells);
+    }
+
+    public void initStopCells(String jsonStr) {
+        if (TextUtils.isEmpty(jsonStr)) {
+            return;
+        }
+        try {
+            JSONArray jsonArray = new JSONArray(jsonStr);
+            for (int i=0; i<jsonArray.length(); i++) {
+                JSONArray subArray = jsonArray.getJSONArray(i);
+                for (int j = 0; j<subArray.length(); j++) {
+                    int num = (int) subArray.get(j);
+                    if (num > 0) {
+                        Cell cell = new Cell(i,j,Cell.CELL_STOP);
+                        stopCells[i][j] = cell;
+                    } else {
+                        stopCells[i][j] = null;
+                    }
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void clearCells() {
@@ -41,21 +78,22 @@ public class TeterisPresenter {
     }
 
     public void startGame() {
-        clearCells();
-        nowTetromino = null;
-        nextTetromino = null;
+        if (gameState != GAME_SUSPEND ) {
+            clearCells();
+            nowTetromino = null;
+            nextTetromino = null;
+        }
+        gameState = GAME_START;
+        reActionMainTimer();
+        actionClearTimer();
+    }
 
+    public void reActionMainTimer() {
         if (timer != null) {
             timer.cancel();
             timer.purge();
             timer = null;
         }
-        if (clearTimer != null) {
-            clearTimer.cancel();
-            clearTimer.purge();
-            clearTimer = null;
-        }
-        gameState = Constant.GAME_START;
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -67,8 +105,15 @@ public class TeterisPresenter {
                     nowTetromino.moveDown();
                 }
             }
-        }, startTime, intervalTime);
+        }, Constant.STARTTIME, Constant.INTERVALTIME-100*mvpView.getLevel());
+    }
 
+    private void actionClearTimer() {
+        if (clearTimer != null) {
+            clearTimer.cancel();
+            clearTimer.purge();
+            clearTimer = null;
+        }
         clearTimer = new Timer();
         clearTimer.schedule(new TimerTask() {
             @Override
@@ -77,7 +122,7 @@ public class TeterisPresenter {
                     boolean canClear = true;
                     for (int j = 0; j < stopCells[0].length; j++) {
                         if (stopCells[i][j] == null || stopCells[i][j].getState() != Cell.CELL_STOP) {
-                           canClear = false;
+                            canClear = false;
                         }
                         if (stopCells[i][j] != null && stopCells[i][j].getState() == Cell.CELL_WILL_DEAD) {
                             stopCells[i][j].addLifeTime();
@@ -89,15 +134,18 @@ public class TeterisPresenter {
                         }
                     }
                     if (stopCells[i][0] != null && stopCells[i][0].getState() == Cell.CELL_DID_DEAD) {
-                        for (int r = i-1; r > 0; r--) {
-                            for (int c = 0; c < stopCells[0].length; c++) {
-                                if (stopCells[r][c] != null) {
-                                    stopCells[r][c].setRow(stopCells[r][c].getRow()+1);
+                        synchronized (stopCells) {
+                            for (int r = i - 1; r > 0; r--) {
+                                for (int c = 0; c < stopCells[0].length; c++) {
+                                    if (stopCells[r][c] != null) {
+                                        stopCells[r][c].setRow(stopCells[r][c].getRow() + 1);
+                                    }
+                                    stopCells[r + 1][c] = stopCells[r][c];
+                                    stopCells[r][c] = null;
                                 }
-                                stopCells[r+1][c] = stopCells[r][c];
-                                stopCells[r][c] = null;
                             }
                         }
+                        mvpView.updateScore(true);
                     }
                 }
             }
@@ -115,7 +163,7 @@ public class TeterisPresenter {
             clearTimer.purge();
             clearTimer = null;
         }
-        gameState = Constant.GAME_STOP;
+        gameState = GAME_STOP;
     }
 
     public void initTetris() {
@@ -135,7 +183,21 @@ public class TeterisPresenter {
 
     private boolean handleDownCollision() {
         if (nowTetromino != null) {
-            boolean isCollision = false;
+            boolean isCollision = isDownCollision();
+            if (isCollision) {
+                updateStopCells();
+            }
+            if (gameState == GAME_STOP) {
+                stopGame();
+            }
+            return isCollision;
+        }
+        return false;
+    }
+
+    private boolean isDownCollision() {
+        boolean isCollision = false;
+        if (nowTetromino != null) {
             for (Cell cell : nowTetromino.cells) {
                 int row = cell.getRow();
                 int col = cell.getCol();
@@ -146,42 +208,18 @@ public class TeterisPresenter {
                         && stopCells[row + 1][col] != null)
                         || cell.getRow() >= Constant.row - 1) {
                     isCollision = true;
-
-                    boolean isTop = false;
                     for (Cell ce : nowTetromino.cells) {
                         if (ce.getRow() <= 0) {
-                            isTop = true;
+                            gameState = GAME_STOP;
                         }
                     }
-                    if (row == 0 || isTop) {
-                        gameState = Constant.GAME_STOP;
+                    if (row == 0 ) {
+                        gameState = GAME_STOP;
                     }
                 }
             }
-            if (isCollision) {
-                synchronized (this) {
-                    for (Cell cell : nowTetromino.cells) {
-                        int row = cell.getRow();
-                        int col = cell.getCol();
-                        if (cell.getState() == Cell.CELL_CENTER) {
-                            continue;
-                        }
-                        cell.setState(Cell.CELL_STOP);
-                        if (row >= 0 && col >= 0 && row < Constant.row && col < Constant.col) {
-                            stopCells[row][col] = cell;
-                        }
-                    }
-                }
-                initTetris();
-            }
-            if (gameState == Constant.GAME_STOP) {
-                if (timer != null) {
-                    timer.cancel();
-                }
-            }
-            return isCollision;
         }
-        return false;
+        return isCollision;
     }
 
     private boolean isLeftCollision() {
@@ -322,6 +360,22 @@ public class TeterisPresenter {
         return false;
     }
 
+    public String getCellJsonStr() {
+        JSONArray jsonArray = new JSONArray();
+        for (int i = 0; i < stopCells.length; i++) {
+            JSONArray childArray = new JSONArray();
+            for (int j = 0; j < stopCells[0].length; j++) {
+                if (stopCells[i][j] != null) {
+                    childArray.put(1);
+                } else {
+                    childArray.put(0);
+                }
+            }
+            jsonArray.put(childArray);
+        }
+        return jsonArray.toString();
+    }
+
     public void moveLeft() {
         if (nowTetromino != null && !isLeftCollision()) {
             nowTetromino.moveLeft();
@@ -335,14 +389,33 @@ public class TeterisPresenter {
     }
 
     public void moveDown() {
-        if (nowTetromino != null && !handleDownCollision()) {
+        if (nowTetromino != null && !isDownCollision()) {
             nowTetromino.moveDown();
         }
     }
 
     public void shotDown() {
-        while (nowTetromino != null && !handleDownCollision()) {
+        while (nowTetromino != null && !isDownCollision()) {
             nowTetromino.moveDown();
         }
+        updateStopCells();
+    }
+
+    private void updateStopCells() {
+        synchronized (stopCells) {
+            for (Cell cell : nowTetromino.cells) {
+                int row = cell.getRow();
+                int col = cell.getCol();
+                if (cell.getState() == Cell.CELL_CENTER) {
+                    continue;
+                }
+                cell.setState(Cell.CELL_STOP);
+                if (row >= 0 && col >= 0 && row < Constant.row && col < Constant.col) {
+                    stopCells[row][col] = cell;
+                }
+            }
+        }
+        mvpView.updateScore(false);
+        initTetris();
     }
 }

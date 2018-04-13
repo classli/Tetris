@@ -14,7 +14,6 @@ import com.sven.tetris.model.Tetromino;
 import com.sven.tetris.util.Constant;
 import com.sven.tetris.R;
 
-import java.util.Map;
 
 /**
  * Created by weixiao on 18/3/11.
@@ -33,7 +32,6 @@ public class MainSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     private float unitWidth;
 
-    private int backGroundColor;
     private float backGroundStrokeWidth;
     private int unitDefaultColor;
     private int unitLineColor;
@@ -67,7 +65,6 @@ public class MainSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         paint.setColor(Color.WHITE);
         paint.setAntiAlias(true);
         this.setKeepScreenOn(true);
-        backGroundColor = getResources().getColor(R.color.button_bg);
         backGroundStrokeWidth = getResources().getDimension(R.dimen.one_dp);
         unitDefaultColor = getResources().getColor(R.color.unit_default);
         unitLineColor = getResources().getColor(R.color.unit_line_color);
