@@ -15,4 +15,5 @@
     <color name="unit_fall">#535353</color>
     <color name="control_text_blue">#1A7EEB</color>
     <color name="msg_box_line_color">#D2D2D2</color>
+    <color name="next_cell">#818181</color>
 </resources>

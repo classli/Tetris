@@ -168,7 +168,7 @@ public class TeterisPresenter {
 
     public void initTetris() {
         randomShape();
-        mvpView.refreshTetromino(nowTetromino);
+        mvpView.refreshTetromino(nowTetromino, nextTetromino);
     }
 
     private void randomShape() {

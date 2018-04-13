@@ -4,8 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.RectF;
-import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -48,20 +47,20 @@ public class MainSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     public MainSurfaceView(Context context) {
         super(context);
-        init();
+        init(context);
     }
 
     public MainSurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(context);
     }
 
     public MainSurfaceView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
+        init(context);
     }
 
-    private void init() {
+    private void init(Context context) {
         surfaceHolder = this.getHolder();
         surfaceHolder.addCallback(this);
         paint = new Paint();
@@ -69,19 +68,19 @@ public class MainSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         paint.setAntiAlias(true);
         this.setKeepScreenOn(true);
         backGroundStrokeWidth = getResources().getDimension(R.dimen.one_dp);
-        unitDefaultColor = getResources().getColor(R.color.unit_default);
-        unitLineColor = getResources().getColor(R.color.unit_line_color);
-        unitDownColor = getResources().getColor(R.color.unit_down);
-        unitFallColor = getResources().getColor(R.color.unit_fall);
-        unitFallLine = getResources().getColor(R.color.unit_fall_line);
-        unitDownLine = getResources().getColor(R.color.unit_down_line);
+        unitDefaultColor = ContextCompat.getColor(context, R.color.unit_default);
+        unitLineColor = ContextCompat.getColor(context, R.color.unit_line_color);
+        unitDownColor = ContextCompat.getColor(context, R.color.unit_down);
+        unitFallColor = ContextCompat.getColor(context, R.color.unit_fall);
+        unitFallLine = ContextCompat.getColor(context, R.color.unit_fall_line);
+        unitDownLine = ContextCompat.getColor(context, R.color.unit_down_line);
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         viewWidth = this.getWidth();
         viewHeight = this.getHeight();
-        unitWidth = viewWidth / Constant.col;
+        unitWidth = (viewWidth-2) / Constant.col;
         flag = true;
         thread = new Thread(this);
         thread.start();
@@ -208,8 +207,8 @@ public class MainSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             myDraw();
             long end = System.currentTimeMillis();
             try {
-                if (end - start < 30) {
-                    Thread.sleep(30 - (end - start));
+                if (end - start < 16) {
+                    Thread.sleep(16 - (end - start));
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();

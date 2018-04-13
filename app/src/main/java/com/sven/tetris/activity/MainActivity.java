@@ -20,6 +20,7 @@ import com.sven.tetris.model.Cell;
 import com.sven.tetris.model.Tetromino;
 import com.sven.tetris.util.Constant;
 import com.sven.tetris.view.MainSurfaceView;
+import com.sven.tetris.view.NextTeterisView;
 
 
 public class MainActivity extends AppCompatActivity implements ViewInterface {
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
     private TextView scoreTitle;
     private TextView cleanLineView;
     private TextView levelView;
+    private NextTeterisView nextTeterisView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         scoreTitle = findViewById(R.id.score_title);
         cleanLineView = findViewById(R.id.clear_line);
         levelView = findViewById(R.id.level);
+        nextTeterisView = findViewById(R.id.next_tetris);
     }
 
     private void initData() {
@@ -257,11 +260,13 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
     }
 
     @Override
-    public void refreshTetromino(Tetromino tetromino) {
-        if (tetromino == null || surfaceView == null) {
+    public void refreshTetromino(Tetromino nowetromino, Tetromino nextTetromino) {
+        if (nowetromino == null || surfaceView == null
+                || nextTetromino == null ||nextTeterisView == null) {
             return;
         }
-        surfaceView.setNowTetromino(tetromino);
+        surfaceView.setNowTetromino(nowetromino);
+        nextTeterisView.refreshNextTeteris(nextTetromino);
     }
 
     @Override
