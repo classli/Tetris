@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -169,13 +169,12 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         down.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent event) {
-                if (presenter == null) {
+                if (presenter == null || presenter.getGameState() == TeterisPresenter.GAME_STOP) {
                     return false;
                 }
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        if (presenter.getGameState() == TeterisPresenter.GAME_SUSPEND
-                                || presenter.getGameState() == TeterisPresenter.GAME_STOP) {
+                        if (presenter.getGameState() == TeterisPresenter.GAME_SUSPEND) {
                             presenter.startGame();
                             return true;
                         }
@@ -230,11 +229,10 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         shotDown.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (presenter == null) {
+                if (presenter == null || presenter.getGameState() == TeterisPresenter.GAME_STOP) {
                     return;
                 }
-                if (presenter.getGameState() == TeterisPresenter.GAME_SUSPEND
-                        || presenter.getGameState() == TeterisPresenter.GAME_STOP) {
+                if (presenter.getGameState() == TeterisPresenter.GAME_SUSPEND) {
                     presenter.startGame();
                     return;
                 }
@@ -242,7 +240,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                         , getResources().getDimension(R.dimen.translationY));
                 animator.setDuration(20);
                 animator.setRepeatCount(1);
-                animator.setInterpolator(new AccelerateDecelerateInterpolator());
+                animator.setInterpolator(new DecelerateInterpolator());
                 animator.setRepeatMode(ValueAnimator.REVERSE);
                 animator.start();
                 presenter.shotDown();
@@ -281,7 +279,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                 if (scoreView != null) {
                     scoreView.setText(score + "");
                 }
-                if (score < 12000 && (score / 500) == level) {
+                if (score < 12000 && (score / 2000) == level) {
                     level = level + 1;
                     levelView.setText(level + "");
                     presenter.reActionMainTimer();

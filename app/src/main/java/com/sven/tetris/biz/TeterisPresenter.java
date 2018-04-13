@@ -312,9 +312,23 @@ public class TeterisPresenter {
                 } else if (!isRotationCollision(nowTetromino.cells[1], nowTetromino.cells)) {
                     nowTetromino.rotation(nowTetromino.cells[1]);
                 }
-            } else {
-                if (!isRotationCollision(cells[1], cells)) {
-                    nowTetromino.rotation(cells[1]);
+            } else if (!isRotationCollision(cells[1], cells)) {
+                nowTetromino.rotation(cells[1]);
+            } else if (nowTetromino.type.equals(Tetromino.TYPE_L) || nowTetromino.type.equals(Tetromino.TYPE_J)) {
+                if (cells[0].getCol() == 0 && cells[2].getCol() != cells[0].getCol()) {
+                    nowTetromino.moveRight();
+                    if (!isRotationCollision(cells[1], cells)) {
+                        nowTetromino.rotation(cells[1]);
+                    } else {
+                        nowTetromino.moveLeft();
+                    }
+                } else if(cells[0].getCol() == Constant.col - 1 && cells[2].getCol() != cells[0].getCol()){
+                    nowTetromino.moveLeft();
+                    if (!isRotationCollision(cells[1], cells)) {
+                        nowTetromino.rotation(cells[1]);
+                    } else {
+                        nowTetromino.moveRight();
+                    }
                 }
             }
         }

@@ -4,15 +4,15 @@
     <color name="colorPrimaryDark">#D2D2D2</color>
     <color name="colorAccent">#FF4081</color>
     <color name="white">#FFFFFF</color>
-    <color name="button_bg">#f2f2f5</color>
+    <color name="button_bg">#f0eff5</color>
     <color name="button_pressed_bg">#DADCEC</color>
     <color name="custom_blue">#1267c8</color>
-    <color name="unit_default">#AAAAAC</color>
-    <color name="unit_line_color">#c687848b</color>
-    <color name="unit_down">#da303030</color>
-    <color name="unit_down_line">#d42a2a2a</color>
-    <color name="unit_fall_line">#dd454648</color>
-    <color name="unit_fall">#e5535355</color>
+    <color name="unit_default">#a8a7ab</color>
+    <color name="unit_line_color">#757578</color>
+    <color name="unit_down">#303030</color>
+    <color name="unit_down_line">#212121</color>
+    <color name="unit_fall_line">#39393b</color>
+    <color name="unit_fall">#535353</color>
     <color name="control_text_blue">#1A7EEB</color>
     <color name="msg_box_line_color">#D2D2D2</color>
 </resources>

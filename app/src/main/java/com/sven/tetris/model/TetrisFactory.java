@@ -64,9 +64,9 @@ public class TetrisFactory {
             cells = new Cell[5];
             cells[0] = new Cell(-1, 6);
             cells[1] = new Cell(-1, 5, Cell.CELL_CENTER);
-            cells[2] = new Cell(0, 4);
+            cells[2] = new Cell(0, 6);
             cells[3] = new Cell(0, 5);
-            cells[4] = new Cell(0, 6);
+            cells[4] = new Cell(0, 4);
         }
     }
 

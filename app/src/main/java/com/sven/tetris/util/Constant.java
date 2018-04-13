@@ -15,7 +15,7 @@ public class Constant {
     public final static int MSG_LEFT = 3;
     public final static int MSG_RIGHT = 4;
 
-    public static final int CLEAR_TIME = 180;
+    public static final int CLEAR_TIME = 150;
 
     public static final int SCORE_LINE = 100;
     public static final int SCORE_CELL = 8;
