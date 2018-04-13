@@ -18,8 +18,8 @@
 
         <com.sven.tetris.view.MainSurfaceView
             android:id="@+id/main_view"
-            android:layout_width="154dp"
-            android:layout_height="280dp" />
+            android:layout_width="156dp"
+            android:layout_height="282dp" />
 
     </RelativeLayout>
 

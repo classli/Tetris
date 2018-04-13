@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -42,6 +44,7 @@ public class MainSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private Tetromino nowTetromino;
     private Cell[][] stoppedCells;
     private int interval = 0;
+    private int radius = 3;
 
     public MainSurfaceView(Context context) {
         super(context);
@@ -94,7 +97,8 @@ public class MainSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 interval ++;
                 paint.setStyle(Paint.Style.FILL);
                 paint.setColor(unitDefaultColor);
-                canvas.drawRect(0, 0, viewWidth, viewHeight, paint);
+                canvas.drawRect(backGroundStrokeWidth, backGroundStrokeWidth, viewWidth-backGroundStrokeWidth,
+                        viewHeight-backGroundStrokeWidth, paint);
                 paint.setColor(Color.BLACK);
                 paint.setStyle(Paint.Style.STROKE);
                 paint.setStrokeWidth(backGroundStrokeWidth);
@@ -102,12 +106,13 @@ public class MainSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 paint.setStyle(Paint.Style.FILL);
                 paint.setColor(unitLineColor);
                 for (int i=0; i<Constant.row-1; i++) {
-                    canvas.drawLine(0, unitWidth*i+unitWidth, viewWidth, unitWidth*i+unitWidth, paint);
+                    canvas.drawLine(backGroundStrokeWidth, unitWidth*i+unitWidth+backGroundStrokeWidth,
+                            viewWidth-backGroundStrokeWidth, unitWidth*i+unitWidth+backGroundStrokeWidth, paint);
                 }
                 for (int i=0; i<Constant.col-1; i++) {
-                    canvas.drawLine(unitWidth*i+unitWidth, 0, unitWidth*i+unitWidth, viewHeight, paint);
+                    canvas.drawLine(unitWidth*i+unitWidth+backGroundStrokeWidth, backGroundStrokeWidth,
+                            unitWidth*i+unitWidth+backGroundStrokeWidth, viewHeight-backGroundStrokeWidth, paint);
                 }
-
                 if (stoppedCells != null) {
                     for (int r=0; r<stoppedCells.length; r++) {
                         for (int c=0; c<stoppedCells[0].length;c++) {
@@ -126,23 +131,27 @@ public class MainSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                             if (Cell.CELL_WILL_DEAD == cell.getState() && interval > 5) {
                                 paint.setStyle(Paint.Style.FILL);
                                 paint.setColor(unitDefaultColor);
-                                canvas.drawRect(col*unitWidth, row*unitWidth, col*unitWidth+unitWidth,
-                                        row*unitWidth+unitWidth, paint);
+                                canvas.drawRect(col*unitWidth+backGroundStrokeWidth, row*unitWidth+backGroundStrokeWidth,
+                                        col*unitWidth+unitWidth+backGroundStrokeWidth,
+                                        row*unitWidth+unitWidth+backGroundStrokeWidth, paint);
                                 paint.setColor(unitLineColor);
                                 paint.setStyle(Paint.Style.STROKE);
                                 paint.setStrokeWidth(backGroundStrokeWidth);
-                                canvas.drawRect(col*unitWidth, row*unitWidth, col*unitWidth+unitWidth,
-                                        row*unitWidth+unitWidth, paint);
+                                canvas.drawRoundRect(col*unitWidth+backGroundStrokeWidth, row*unitWidth+backGroundStrokeWidth,
+                                        col*unitWidth+unitWidth+backGroundStrokeWidth,
+                                        row*unitWidth+unitWidth+backGroundStrokeWidth, radius, radius, paint);
                             } else {
                                 paint.setStyle(Paint.Style.FILL);
                                 paint.setColor(unitDownColor);
-                                canvas.drawRect(col*unitWidth, row*unitWidth, col*unitWidth+unitWidth,
-                                        row*unitWidth+unitWidth, paint);
+                                canvas.drawRect(col*unitWidth+backGroundStrokeWidth, row*unitWidth+backGroundStrokeWidth,
+                                        col*unitWidth+unitWidth+backGroundStrokeWidth,
+                                        row*unitWidth+unitWidth+backGroundStrokeWidth, paint);
                                 paint.setColor(unitDownLine);
                                 paint.setStyle(Paint.Style.STROKE);
                                 paint.setStrokeWidth(backGroundStrokeWidth);
-                                canvas.drawRect(col*unitWidth, row*unitWidth, col*unitWidth+unitWidth,
-                                        row*unitWidth+unitWidth, paint);
+                                canvas.drawRoundRect(col*unitWidth+backGroundStrokeWidth, row*unitWidth+backGroundStrokeWidth,
+                                        col*unitWidth+unitWidth+backGroundStrokeWidth,
+                                        row*unitWidth+unitWidth+backGroundStrokeWidth, radius, radius, paint);
                             }
                         }
                     }
@@ -160,13 +169,16 @@ public class MainSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                         int col = cell.getCol();
                         paint.setStyle(Paint.Style.FILL);
                         paint.setColor(unitFallColor);
-                        canvas.drawRect(col*unitWidth, row*unitWidth, col*unitWidth+unitWidth,
-                                row*unitWidth+unitWidth, paint);
+                        canvas.drawRect(col*unitWidth+backGroundStrokeWidth, row*unitWidth+backGroundStrokeWidth,
+                                col*unitWidth+unitWidth+backGroundStrokeWidth,
+                                row*unitWidth+unitWidth+backGroundStrokeWidth, paint);
                         paint.setColor(unitFallLine);
                         paint.setStyle(Paint.Style.STROKE);
                         paint.setStrokeWidth(backGroundStrokeWidth);
-                        canvas.drawRect(col*unitWidth, row*unitWidth, col*unitWidth+unitWidth,
-                                row*unitWidth+unitWidth, paint);
+                        canvas.drawRoundRect(col*unitWidth+backGroundStrokeWidth, row*unitWidth+backGroundStrokeWidth,
+                                col*unitWidth+unitWidth+backGroundStrokeWidth,
+                                    row*unitWidth+unitWidth+backGroundStrokeWidth, radius, radius, paint);
+
                     }
                 }
             }

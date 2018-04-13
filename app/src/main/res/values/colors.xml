@@ -11,7 +11,7 @@
     <color name="unit_line_color">#c687848b</color>
     <color name="unit_down">#da303030</color>
     <color name="unit_down_line">#d42a2a2a</color>
-    <color name="unit_fall_line">#9a454648</color>
+    <color name="unit_fall_line">#dd454648</color>
     <color name="unit_fall">#e5535355</color>
     <color name="control_text_blue">#1A7EEB</color>
     <color name="msg_box_line_color">#D2D2D2</color>
