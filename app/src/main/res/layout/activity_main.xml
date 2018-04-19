@@ -13,23 +13,25 @@
         android:layout_marginTop="65dp"
         android:gravity="center"
         android:background="@color/button_bg"
-        android:layout_width="182dp"
-        android:layout_height="308dp">
+        android:layout_width="169dp"
+        android:layout_height="286dp">
 
         <com.sven.tetris.view.MainSurfaceView
             android:id="@+id/main_view"
-            android:layout_width="156dp"
-            android:layout_height="282dp" />
+            android:layout_width="145dp"
+            android:layout_height="260dp" />
 
     </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/detail_ll"
         android:orientation="vertical"
+        android:layout_toRightOf="@id/main_view_rl"
         android:layout_alignParentEnd="true"
         android:layout_marginRight="30dp"
         android:layout_marginTop="120dp"
-        android:layout_width="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TextView
@@ -100,8 +102,8 @@
         <com.sven.tetris.view.NextTeterisView
             android:layout_marginTop="10dp"
             android:id="@+id/next_tetris"
-            android:layout_width="58dp"
-            android:layout_height="30dp" />
+            android:layout_width="50dp"
+            android:layout_height="26dp" />
     </LinearLayout>
     
     <RelativeLayout

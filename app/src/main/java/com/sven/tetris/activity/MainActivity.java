@@ -104,6 +104,8 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                 if (presenter.getGameState() == TeterisPresenter.GAME_SUSPEND
                         || presenter.getGameState() == TeterisPresenter.GAME_STOP) {
                     presenter.startGame();
+                    isSuspend = false;
+                    stop.setPressed(false);
                     return;
                 }
                 presenter.rotationTeteris();
@@ -119,6 +121,8 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                     case MotionEvent.ACTION_DOWN:
                         if (presenter.getGameState() == TeterisPresenter.GAME_SUSPEND) {
                             presenter.startGame();
+                            isSuspend = false;
+                            stop.setPressed(false);
                             return true;
                         }
                         if (presenter.getGameState() == TeterisPresenter.GAME_STOP) {
@@ -149,6 +153,8 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                     case MotionEvent.ACTION_DOWN:
                         if (presenter.getGameState() == TeterisPresenter.GAME_SUSPEND) {
                             presenter.startGame();
+                            isSuspend = false;
+                            stop.setPressed(false);
                             return true;
                         }
                         if (presenter.getGameState() == TeterisPresenter.GAME_STOP) {
@@ -179,6 +185,8 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                     case MotionEvent.ACTION_DOWN:
                         if (presenter.getGameState() == TeterisPresenter.GAME_SUSPEND) {
                             presenter.startGame();
+                            isSuspend = false;
+                            stop.setPressed(false);
                             return true;
                         }
                         if (presenter != null) {
@@ -197,7 +205,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
             @Override
             public void onClick(View v) {
                 if (presenter != null) {
-                    presenter.startGame();
+                    presenter.reStartGame();
                 }
                 scoreTitle.setText(R.string.Score);
                 isSuspend = false;
@@ -237,6 +245,8 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                 }
                 if (presenter.getGameState() == TeterisPresenter.GAME_SUSPEND) {
                     presenter.startGame();
+                    isSuspend = false;
+                    stop.setPressed(false);
                     return;
                 }
                 ObjectAnimator animator = ObjectAnimator.ofFloat(surfaceView, "TranslationY", 0
@@ -261,8 +271,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
 
     @Override
     public void refreshTetromino(Tetromino nowetromino, Tetromino nextTetromino) {
-        if (nowetromino == null || surfaceView == null
-                || nextTetromino == null ||nextTeterisView == null) {
+        if (surfaceView == null|| nextTeterisView == null) {
             return;
         }
         surfaceView.setNowTetromino(nowetromino);
@@ -296,6 +305,19 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
     @Override
     public int getLevel() {
         return level;
+    }
+
+    @Override
+    public void showMaxScore() {
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(scoreView != null && scoreTitle != null) {
+                    scoreView.setText(score>maxScore?score+"":maxScore+"");
+                    scoreTitle.setText(R.string.max_score);
+                }
+            }
+        });
     }
 
     Handler handler = new Handler() {

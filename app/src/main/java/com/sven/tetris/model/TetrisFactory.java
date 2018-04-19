@@ -105,24 +105,22 @@ public class TetrisFactory {
 
     public Tetromino ranShape() {
         Random random = new Random();
-        int index = random.nextInt(7);
-        switch (index) {
-            case 0:
-                return new Z();
-            case 1:
-                return new S();
-            case 2:
-                return new J();
-            case 3:
-                return new L();
-            case 4:
-                return new O();
-            case 5:
-                return new I();
-            case 6:
-                return new T();
+        int index = random.nextInt(100);
+        if (index<15) {
+            return new T();
+        } else if(index<30) {
+            return new S();
+        } else if (index<45) {
+            return new J();
+        } else if (index<60) {
+            return new O();
+        } else if (index<75) {
+            return new L();
+        } else if (index<90) {
+            return new Z();
+        } else {
+            return new I();
         }
-        return null;
     }
 
 }

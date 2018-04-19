@@ -8,9 +8,9 @@ public class Constant {
     public final static int row = 20;
     public final static int col = 11;
 
-    public final static int LONG_PRESS_TIME = 300;
+    public final static int LONG_PRESS_TIME = 200;
     public final static int LONG_PRESS_DOWN = 40;
-    public final static int LONG_PRESS_LEFT = 100;
+    public final static int LONG_PRESS_LEFT = 80;
     public final static int MSG_DOWN = 1;
     public final static int MSG_LEFT = 3;
     public final static int MSG_RIGHT = 4;
@@ -21,7 +21,7 @@ public class Constant {
     public static final int SCORE_CELL = 8;
 
     public static final int STARTTIME = 500;
-    public static final int INTERVALTIME = 800;
+    public static final int INTERVALTIME = 1150;
 
     public static final String SP_NAME = "TETERIS_SP";
     public static final String SP_KEY_MAX_SCORE = "max_score";

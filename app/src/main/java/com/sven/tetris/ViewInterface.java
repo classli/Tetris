@@ -12,4 +12,5 @@ public interface ViewInterface {
     void refreshTetromino(Tetromino nowTetromino, Tetromino nextTetromino);
     void updateScore(boolean isLineScore);
     int getLevel();
+    void showMaxScore();
 }

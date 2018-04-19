@@ -90,10 +90,11 @@ public class MainSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         try {
             canvas = surfaceHolder.lockCanvas();
             if (canvas != null) {
-                if (interval == 10) {
+                if (interval == 15) {
                     interval = 0;
                 }
                 interval ++;
+                canvas.drawColor(Color.BLACK);
                 paint.setStyle(Paint.Style.FILL);
                 paint.setColor(unitDefaultColor);
                 canvas.drawRect(backGroundStrokeWidth, backGroundStrokeWidth, viewWidth-backGroundStrokeWidth,
@@ -127,7 +128,7 @@ public class MainSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                                 continue;
                             }
                             int col = cell.getCol();
-                            if (Cell.CELL_WILL_DEAD == cell.getState() && interval > 6) {
+                            if (Cell.CELL_WILL_DEAD == cell.getState() && interval > 7) {
                                 paint.setStyle(Paint.Style.FILL);
                                 paint.setColor(unitDefaultColor);
                                 canvas.drawRect(col*unitWidth+backGroundStrokeWidth, row*unitWidth+backGroundStrokeWidth,
