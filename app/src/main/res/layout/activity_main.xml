@@ -27,10 +27,11 @@
         android:id="@+id/detail_ll"
         android:orientation="vertical"
         android:layout_toRightOf="@id/main_view_rl"
+        android:layout_alignTop="@id/main_view_rl"
         android:layout_alignParentEnd="true"
         android:layout_marginRight="30dp"
-        android:layout_marginTop="120dp"
         android:layout_marginLeft="40dp"
+        android:layout_marginTop="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -112,8 +113,8 @@
         android:layout_marginTop="50dp"
         android:layout_marginLeft="20dp"
         android:layout_marginBottom="10dp"
-        android:layout_width="150dp"
-        android:layout_height="150dp">
+        android:layout_width="160dp"
+        android:layout_height="160dp">
 
         <ImageView
             android:id="@+id/btn_down"

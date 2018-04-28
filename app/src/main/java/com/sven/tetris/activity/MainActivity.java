@@ -104,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                 if (presenter.getGameState() == TeterisPresenter.GAME_SUSPEND
                         || presenter.getGameState() == TeterisPresenter.GAME_STOP) {
                     presenter.startGame();
+                    scoreTitle.setText(R.string.Score);
                     isSuspend = false;
                     stop.setPressed(false);
                     return;
@@ -121,6 +122,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                     case MotionEvent.ACTION_DOWN:
                         if (presenter.getGameState() == TeterisPresenter.GAME_SUSPEND) {
                             presenter.startGame();
+                            scoreTitle.setText(R.string.Score);
                             isSuspend = false;
                             stop.setPressed(false);
                             return true;
@@ -153,6 +155,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                     case MotionEvent.ACTION_DOWN:
                         if (presenter.getGameState() == TeterisPresenter.GAME_SUSPEND) {
                             presenter.startGame();
+                            scoreTitle.setText(R.string.Score);
                             isSuspend = false;
                             stop.setPressed(false);
                             return true;
@@ -185,6 +188,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                     case MotionEvent.ACTION_DOWN:
                         if (presenter.getGameState() == TeterisPresenter.GAME_SUSPEND) {
                             presenter.startGame();
+                            scoreTitle.setText(R.string.Score);
                             isSuspend = false;
                             stop.setPressed(false);
                             return true;
@@ -229,6 +233,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                     } else {
                         if (presenter != null) {
                             presenter.startGame();
+                            scoreTitle.setText(R.string.Score);
                         }
                     }
                     stop.setPressed(isSuspend);
@@ -245,6 +250,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                 }
                 if (presenter.getGameState() == TeterisPresenter.GAME_SUSPEND) {
                     presenter.startGame();
+                    scoreTitle.setText(R.string.Score);
                     isSuspend = false;
                     stop.setPressed(false);
                     return;

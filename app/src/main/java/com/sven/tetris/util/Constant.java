@@ -21,7 +21,7 @@ public class Constant {
     public static final int SCORE_CELL = 8;
 
     public static final int STARTTIME = 500;
-    public static final int INTERVALTIME = 1150;
+    public static final int INTERVALTIME = 1000;
 
     public static final String SP_NAME = "TETERIS_SP";
     public static final String SP_KEY_MAX_SCORE = "max_score";

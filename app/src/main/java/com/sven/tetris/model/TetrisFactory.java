@@ -106,15 +106,15 @@ public class TetrisFactory {
     public Tetromino ranShape() {
         Random random = new Random();
         int index = random.nextInt(100);
-        if (index<15) {
+        if (index<10) {
             return new T();
         } else if(index<30) {
             return new S();
         } else if (index<45) {
             return new J();
-        } else if (index<60) {
+        } else if (index<55) {
             return new O();
-        } else if (index<75) {
+        } else if (index<70) {
             return new L();
         } else if (index<90) {
             return new Z();

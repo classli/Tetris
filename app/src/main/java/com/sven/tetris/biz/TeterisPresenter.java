@@ -92,7 +92,7 @@ public class TeterisPresenter {
     }
 
     public void reStartGame() {
-        if(gameState ==  GAME_SUSPEND || gameState == GAME_START) {
+        if (gameState == GAME_SUSPEND || gameState == GAME_START) {
             stopGame();
             reStartAnimation();
             return;
@@ -112,6 +112,12 @@ public class TeterisPresenter {
             timer = null;
         }
         timer = new Timer();
+        int interval = Constant.INTERVALTIME;
+        if (mvpView.getLevel() <3) {
+            interval = interval - 200*mvpView.getLevel();
+        } else {
+            interval = interval - 100*mvpView.getLevel();
+        }
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -122,7 +128,7 @@ public class TeterisPresenter {
                     nowTetromino.moveDown();
                 }
             }
-        }, Constant.STARTTIME, Constant.INTERVALTIME - 152 * mvpView.getLevel());
+        }, Constant.STARTTIME, interval);
     }
 
     private void actionClearTimer() {
@@ -366,7 +372,7 @@ public class TeterisPresenter {
                     nowTetromino.rotation(nowTetromino.cells[1]);
                 } else if (!isAntRotationCollision(nowTetromino.cells[1], nowTetromino.cells)) {
                     nowTetromino.antRotation(nowTetromino.cells[1]);
-                } else if(nowTetromino.cells[1].getCol()==Constant.col-1) {
+                } else if (nowTetromino.cells[1].getCol() == Constant.col - 1) {
                     nowTetromino.moveLeft();
                     if (!isAntRotationCollision(nowTetromino.cells[1], nowTetromino.cells)) {
                         nowTetromino.antRotation(nowTetromino.cells[1]);
@@ -380,7 +386,7 @@ public class TeterisPresenter {
                     nowTetromino.antRotation(nowTetromino.cells[1]);
                 } else if (!isRotationCollision(nowTetromino.cells[1], nowTetromino.cells)) {
                     nowTetromino.rotation(nowTetromino.cells[1]);
-                } else if (nowTetromino.cells[1].getCol()==0) {
+                } else if (nowTetromino.cells[1].getCol() == 0) {
                     nowTetromino.moveRight();
                     if (!isRotationCollision(nowTetromino.cells[1], nowTetromino.cells)) {
                         nowTetromino.rotation(nowTetromino.cells[1]);
@@ -406,15 +412,15 @@ public class TeterisPresenter {
                         nowTetromino.moveRight();
                     }
                 }
-            } else if(nowTetromino.type.equals(Tetromino.TYPE_T)) {
-                if(nowTetromino.cells[1].getCol() ==0) {
+            } else if (nowTetromino.type.equals(Tetromino.TYPE_T)) {
+                if (nowTetromino.cells[1].getCol() == 0) {
                     nowTetromino.moveRight();
                     if (!isRotationCollision(cells[1], cells)) {
                         nowTetromino.rotation(cells[1]);
                     } else {
                         nowTetromino.moveLeft();
                     }
-                } else if (nowTetromino.cells[1].getCol() ==Constant.col-1) {
+                } else if (nowTetromino.cells[1].getCol() == Constant.col - 1) {
                     nowTetromino.moveLeft();
                     if (!isRotationCollision(cells[1], cells)) {
                         nowTetromino.rotation(cells[1]);
